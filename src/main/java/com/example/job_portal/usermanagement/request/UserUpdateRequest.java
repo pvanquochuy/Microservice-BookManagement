@@ -1,20 +1,25 @@
-package com.example.job_portal.usermanagement.dto.request;
+package com.example.job_portal.usermanagement.request;
+
+
+import java.time.LocalDate;
+import java.util.List;
 
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserCreationRequest {
-    String username;
+public class UserUpdateRequest {
+
     String password;
     String firstName;
     String lastName;
+
     LocalDate dob;
+
+    List<String> roles;
 }

@@ -9,7 +9,7 @@ public class MessageConstant {
 
     public static final String CREATE_DATA_SUCCESS = "Create success!";
     public static final String DELETE_DATA_SUCCESS = "Delete data successfully";
-    public static final String USER_IS_INACTIVE = "User account is inactive!";
+    public static final String USER_IS_EXISTED = "User account is existed!";
     public static final String USER_HAS_BEEN_DELETED = "User account has been deleted!";
     public static final String INVALID_TOKEN = "Invalid Token received!";
 
