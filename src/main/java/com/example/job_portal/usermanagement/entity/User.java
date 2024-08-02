@@ -20,9 +20,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Size(min = 6, message = "username must be at least 6 characters")
+    @Size(min = 6, message = "USERNAME_INVALID")
     private String username;
-
     @Size(min = 6, message = "password must be at least 6 characters")
     private String password;
     private String firstName;

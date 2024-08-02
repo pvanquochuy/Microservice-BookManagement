@@ -1,4 +1,4 @@
-package com.example.job_portal.common.exception;
+package com.example.job_portal.usermanagement.exception;
 
 
 import lombok.Data;

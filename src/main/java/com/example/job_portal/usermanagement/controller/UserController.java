@@ -7,16 +7,16 @@ import com.example.job_portal.common.dto.MessageDTO;
 import com.example.job_portal.usermanagement.dto.UserDTO;
 import com.example.job_portal.usermanagement.request.UserCreationRequest;
 import com.example.job_portal.usermanagement.entity.User;
+import com.example.job_portal.usermanagement.request.UserUpdateRequest;
 import com.example.job_portal.usermanagement.service.UserService;
 import com.example.job_portal.usermanagement.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,7 +33,7 @@ public class UserController {
      */
     @PostMapping
     ResponseEntity<GenericResponse<UserDTO>> createUser(@RequestBody @Valid UserCreationRequest request){
-        UserDTO result = userService.create(request);
+        UserDTO result = userService.createUser(request);
         GenericResponse<UserDTO> response = GenericResponse
                 .<UserDTO>builder()
                 .isSuccess(true)
@@ -46,7 +46,59 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Get all users API
+     *
+     * @return GenericResponse<Object>
+     */
+    @GetMapping
+        ResponseEntity<GenericResponse<List<UserDTO>>> getUsers(){
+        List<UserDTO> result = userService.getUsers();
+        GenericResponse<List<UserDTO>> response = GenericResponse
+                .<List<UserDTO>>builder()
+                .isSuccess(true)
+                .data(result)
+                .message(MessageDTO.builder()
+                        .messageDetail(MessageConstant.CREATE_DATA_SUCCESS)
+                        .messageCode(MessageCodeConstant.CREATED_DATA_SUCCESSFULLY)
+                        .build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
 
+    @PutMapping("/{userId}")
+    ResponseEntity<GenericResponse<UserDTO>> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
+        UserDTO user = userService.updateUser(userId, request);
+        GenericResponse<UserDTO> response = GenericResponse
+                .<UserDTO>builder()
+                .isSuccess(true)
+                .data(user)
+                .message(MessageDTO.builder()
+                        .messageCode(MessageCodeConstant.SUCCESS)
+                        .messageDetail("USER_UPDATED")
+                        .build())
+                .build();
 
+        return ResponseEntity.ok(response);
+    }
 
+    /**
+     * Deletes User by its ID.
+     *
+     * @param id ID of the User to delete.
+     * @return ResponseEntity with a message indicating success or failure.
+     */
+    @DeleteMapping("/{id}")
+    public GenericResponse<Object> deleteUser(@PathVariable String id) {
+        userService.deleteUser(id);
+        return GenericResponse
+                .builder()
+                .message(MessageDTO
+                        .builder()
+                        .messageCode(MessageCodeConstant.SUCCESS)
+                        .messageDetail(MessageConstant.DELETE_DATA_SUCCESS)
+                        .build())
+                .isSuccess(true)
+                .build();
+    }
 }

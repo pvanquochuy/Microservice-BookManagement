@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-//    @Mapping(target = "id", source = "id")
+    @Mapping(target = "id", ignore = true)  // Nếu bạn không muốn ánh xạ id từ UserCreationRequest
     User toUser(UserCreationRequest request);
 
     /**
@@ -23,5 +23,6 @@ public interface UserMapper {
     @Mapping(target = "id", source = "id")
     UserDTO toDto(User entity);
 
-//    UserDTO updateUser(@MappingTarget User user, UserUpdateRequest request);
+    @Mapping(target = "roles", ignore = true)
+    void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }
