@@ -7,7 +7,7 @@ public class MessageConstant {
     public static final String SUCCESS = "Success";
     public static final String VALIDATION_ERROR = "Validation Errors";
     public static final String USERNAME_INVALID = "Invalid username!";
-    public static final String USER_NOT_EXISTED = "Invalid not existed!";
+    public static final String USER_NOT_EXISTED = "User not existed!";
 
 
     public static final String CREATE_DATA_SUCCESS = "Create success!";

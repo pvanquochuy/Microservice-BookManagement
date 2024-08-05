@@ -6,13 +6,10 @@ import com.example.job_portal.common.dto.GenericResponse;
 import com.example.job_portal.common.dto.MessageDTO;
 import com.example.job_portal.usermanagement.dto.UserDTO;
 import com.example.job_portal.usermanagement.request.UserCreationRequest;
-import com.example.job_portal.usermanagement.entity.User;
 import com.example.job_portal.usermanagement.request.UserUpdateRequest;
 import com.example.job_portal.usermanagement.service.UserService;
-import com.example.job_portal.usermanagement.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,6 +63,30 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Get  user by id API
+     *
+     * @return GenericResponse<Object>
+     */
+    @GetMapping("/{userId}")
+    ResponseEntity<GenericResponse<UserDTO>> getUser(@PathVariable String userId){
+        UserDTO result = userService.getUser(userId);
+        GenericResponse<UserDTO> response = GenericResponse
+                .<UserDTO>builder()
+                .isSuccess(true)
+                .data(result)
+                .message(MessageDTO.builder()
+                        .messageDetail(MessageConstant.SUCCESS)
+                        .messageCode(MessageCodeConstant.SUCCESS)
+                        .build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
+    /**
+     * delete user by id API
+     *
+     * @return GenericResponse<Object>
+     */
     @PutMapping("/{userId}")
     ResponseEntity<GenericResponse<UserDTO>> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
         UserDTO user = userService.updateUser(userId, request);

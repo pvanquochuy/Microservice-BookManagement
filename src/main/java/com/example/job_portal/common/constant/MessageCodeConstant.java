@@ -12,5 +12,5 @@ public class MessageCodeConstant {
     public static final String CREATED_DATA_SUCCESSFULLY = "D200"; // Created is data successfull
 
     public static final String USER_EXISTED = "U001";
-    public static final String USER_NOT_EXISTED = "U400";
+    public static final String USER_NOT_EXISTED = "U404";
 }

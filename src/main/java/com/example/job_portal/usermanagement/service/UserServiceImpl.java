@@ -10,14 +10,15 @@ import com.example.job_portal.usermanagement.request.UserCreationRequest;
 import com.example.job_portal.usermanagement.entity.User;
 import com.example.job_portal.usermanagement.repository.UserRepository;
 import com.example.job_portal.usermanagement.request.UserUpdateRequest;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserService{
         if(userRepository.existsByUsername(request.getUsername()))
             throw new UserManagementException(MessageCodeConstant.USER_EXISTED, MessageConstant.USER_IS_EXISTED);
         User user = userMapper.toUser(request);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         User result = userRepository.save(user);
 
         return userMapper.toDto(result);
@@ -49,7 +52,7 @@ public class UserServiceImpl implements UserService{
         userMapper.updateUser(user, request);
         return userMapper.toDto(userRepository.save(user));
     }
-
+    
     @Override
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
