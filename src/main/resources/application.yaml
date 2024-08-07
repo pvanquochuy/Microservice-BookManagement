@@ -15,6 +15,6 @@ spring:
     
 
 jwt:
-  signerKey: dBaHoKY581+HSZ/AUaR7Oync8tk6j587WnhZvCvjQDkRleRbPdCn9HYnarWUGkvN
+  signerKey: "dBaHoKY581+HSZ/AUaR7Oync8tk6j587WnhZvCvjQDkRleRbPdCn9HYnarWUGkvN"
   valid-duration: 3600 # in second
   refreshable-duration: 36000 # in seconds

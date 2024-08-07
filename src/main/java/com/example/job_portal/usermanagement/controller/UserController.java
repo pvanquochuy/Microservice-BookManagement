@@ -9,7 +9,10 @@ import com.example.job_portal.usermanagement.request.UserCreationRequest;
 import com.example.job_portal.usermanagement.request.UserUpdateRequest;
 import com.example.job_portal.usermanagement.service.UserService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +20,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
 
-    private final UserService userService;
+    UserService userService;
 
     /**
      * Create user API
@@ -56,12 +61,13 @@ public class UserController {
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
-                        .messageDetail(MessageConstant.CREATE_DATA_SUCCESS)
-                        .messageCode(MessageCodeConstant.CREATED_DATA_SUCCESSFULLY)
+                        .messageDetail(MessageConstant.SUCCESS)
+                        .messageCode(MessageCodeConstant.SUCCESS)
                         .build())
                 .build();
         return ResponseEntity.ok(response);
     }
+
 
     /**
      * Get  user by id API
@@ -82,8 +88,24 @@ public class UserController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/my-info")
+    ResponseEntity<GenericResponse<UserDTO>> getMyInfo(){
+        UserDTO result = userService.getMyInfo();
+        GenericResponse<UserDTO> response = GenericResponse
+                .<UserDTO>builder()
+                .isSuccess(true)
+                .data(result)
+                .message(MessageDTO.builder()
+                        .messageDetail(MessageConstant.SUCCESS)
+                        .messageCode(MessageCodeConstant.SUCCESS)
+                        .build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
     /**
-     * delete user by id API
+     * update user by id API
      *
      * @return GenericResponse<Object>
      */
@@ -104,7 +126,7 @@ public class UserController {
     }
 
     /**
-     * Deletes User by its ID.
+     * Deletes User by ID.
      *
      * @param id ID of the User to delete.
      * @return ResponseEntity with a message indicating success or failure.

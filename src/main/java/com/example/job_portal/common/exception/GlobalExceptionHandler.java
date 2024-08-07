@@ -1,5 +1,7 @@
 package com.example.job_portal.common.exception;
 
+import com.example.job_portal.common.constant.MessageCodeConstant;
+import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.dto.GenericResponse;
 import com.example.job_portal.common.dto.MessageDTO;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,11 +77,27 @@ public class GlobalExceptionHandler {
                 .isSuccess(false)
                 .data(null) // No data to return in case of exception
                 .message(MessageDTO.builder()
-                        .messageDetail("An unexpected error occurred.")
-                        .messageCode("UNKNOWN_ERROR")
+                        .messageDetail(MessageConstant.UNAUTHORIZED)
+                        .messageCode(MessageCodeConstant.UNCATEGORIED)
                         .build())
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<GenericResponse<Object>> handleAccessDeniedException(AccessDeniedException ex) {
+        GenericResponse<Object> response = GenericResponse.<Object>builder()
+                .isSuccess(false)
+                .data(null) // No data to return in case of exception
+                .message(MessageDTO.builder()
+                        .messageDetail(MessageConstant.UNAUTHORIZED)
+                        .messageCode(MessageCodeConstant.UNAUTHORIZED)
+                        .build())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }

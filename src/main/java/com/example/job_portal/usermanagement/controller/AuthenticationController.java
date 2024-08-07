@@ -8,9 +8,14 @@ import com.example.job_portal.usermanagement.dto.AuthenticationDTO;
 import com.example.job_portal.usermanagement.dto.IntrospectDTO;
 import com.example.job_portal.usermanagement.request.AuthenticationRequest;
 import com.example.job_portal.usermanagement.request.IntrospectRequest;
+import com.example.job_portal.usermanagement.request.LogoutRequest;
 import com.example.job_portal.usermanagement.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +26,11 @@ import java.text.ParseException;
 
 @RestController
 @RequestMapping("/api/auth")
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
-    private final AuthenticationService authenticationService;
+    AuthenticationService authenticationService;
 
 
     /**
@@ -40,8 +47,8 @@ public class AuthenticationController {
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
-                        .messageDetail(MessageConstant.CREATE_DATA_SUCCESS)
-                        .messageCode(MessageCodeConstant.CREATED_DATA_SUCCESSFULLY)
+                        .messageDetail(MessageConstant.SUCCESS)
+                        .messageCode(MessageCodeConstant.SUCCESS)
                         .build())
                 .build();
         return ResponseEntity.ok(response);
@@ -61,9 +68,24 @@ public class AuthenticationController {
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
-                        .messageDetail(MessageConstant.CREATE_DATA_SUCCESS)
-                        .messageCode(MessageCodeConstant.CREATED_DATA_SUCCESSFULLY)
+                        .messageDetail(MessageConstant.SUCCESS)
+                        .messageCode(MessageCodeConstant.SUCCESS)
                         .build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     *  logout API
+     *
+     * 
+     * @return GenericResponse<IntrospectDTO>
+     */
+    @PostMapping("/logout")
+    ResponseEntity<GenericResponse<Void>> authenticate(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        GenericResponse<Void> response = GenericResponse
+                .<Void>builder()
                 .build();
         return ResponseEntity.ok(response);
     }

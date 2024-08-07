@@ -15,6 +15,8 @@ public class MessageConstant {
     public static final String USER_IS_EXISTED = "User account is existed!";
     public static final String USER_HAS_BEEN_DELETED = "User account has been deleted!";
     public static final String INVALID_TOKEN = "Invalid Token received!";
+    public static final String UNAUTHORIZED = "Do not have permission!";
+    public static final String UNCATEGORIED = "An unexpected error occurred!";
 
 
     public static final String M031_NOT_PERMISSION = "Access Denied. You don’t have permission to access";

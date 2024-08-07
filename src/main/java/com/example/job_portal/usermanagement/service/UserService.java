@@ -20,6 +20,8 @@ public interface UserService {
 
     UserDTO getUser(String id);
 
+    UserDTO getMyInfo();
+
     void deleteUser(String userId);
 
     /**

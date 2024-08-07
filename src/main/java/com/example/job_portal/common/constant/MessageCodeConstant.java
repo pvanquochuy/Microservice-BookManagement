@@ -8,6 +8,8 @@ public class MessageCodeConstant {
     public static final String SUCCESS = "200";
     public static final String UNAUTHORIZED = "401";
 
+    public static final String UNCATEGORIED = "028";
+
 
     public static final String CREATED_DATA_SUCCESSFULLY = "D200"; // Created is data successfull
 
