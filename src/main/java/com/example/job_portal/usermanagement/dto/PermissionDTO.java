@@ -11,4 +11,5 @@ import lombok.experimental.FieldDefaults;
 public class PermissionDTO {
     String name;
     String description;
+
 }

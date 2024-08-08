@@ -58,6 +58,20 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     protected long REFRESHABLE_DURATION;
 
     @Override
+    public IntrospectDTO introspect(IntrospectRequest request) throws JOSEException, ParseException {
+        var token = request.getToken();
+        boolean isValid = true;
+        try{
+            verifyToken(token);
+        } catch (AppException e){
+            isValid = false;
+        }
+        return IntrospectDTO.builder()
+                .valid(isValid)
+                .build();
+    }
+
+    @Override
     public AuthenticationDTO authenticate(AuthenticationRequest request) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         var user = userRepository.findByUsername(request.getUsername())
@@ -72,20 +86,6 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         return AuthenticationDTO.builder().token(token).authenticated(true).build();
     }
 
-    @Override
-    public void logout(LogoutRequest request) throws ParseException, JOSEException {
-        var signToken = verifyToken(request.getToken());
-
-        String jit = signToken.getJWTClaimsSet().getJWTID();
-        Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
-
-        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
-                .id(jit)
-                .expiryTime(expiryTime)
-                .build();
-
-        invalidatedTokenRepository.save(invalidatedToken);
-    }
     private String generateToken(User user) {
         log.info("generate token");
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
@@ -113,6 +113,21 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             log.error("cannot create token: ", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void logout(LogoutRequest request) throws ParseException, JOSEException {
+        var signToken = verifyToken(request.getToken());
+
+        String jit = signToken.getJWTClaimsSet().getJWTID();
+        Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
+
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                .id(jit)
+                .expiryTime(expiryTime)
+                .build();
+
+        invalidatedTokenRepository.save(invalidatedToken);
     }
 
     private SignedJWT verifyToken(String token) throws JOSEException, ParseException {
@@ -149,21 +164,6 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         return stringJoiner.toString();
     }
 
-    @Override
-    public IntrospectDTO introspect(IntrospectRequest request) throws JOSEException, ParseException {
-        var token = request.getToken();
 
-        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
-
-        SignedJWT signedJWT = SignedJWT.parse(token);
-
-        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-
-        var verified = signedJWT.verify(verifier);
-
-        return IntrospectDTO.builder()
-                .valid(verified && expiryTime.after(new Date()))
-                .build();
-    }
 
 }

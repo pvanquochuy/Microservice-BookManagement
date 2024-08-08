@@ -4,6 +4,8 @@ import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.dto.GenericResponse;
 import com.example.job_portal.common.dto.MessageDTO;
+import com.example.job_portal.usermanagement.exception.RestExceptionHandler;
+import com.example.job_portal.usermanagement.exception.UserManagementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -57,6 +59,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(AppException.class)
     public ResponseEntity<GenericResponse<Object>> handleAppException(AppException ex) {
         GenericResponse<Object> response = GenericResponse.<Object>builder()
@@ -96,8 +99,19 @@ public class GlobalExceptionHandler {
                         .build())
                 .build();
 
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
+    @ExceptionHandler(RestExceptionHandler.class)
+    public ResponseEntity<GenericResponse<Object>> handleRestExceptionHandler(RestExceptionHandler ex) {
+        GenericResponse<Object> response = GenericResponse.<Object>builder()
+                .isSuccess(false)
+                .data(null) // No data to return in case of exception
+                .message(MessageDTO.builder()
+                        .messageDetail(ex.getMessage())
+                        .messageCode(ex.getMessageCode())
+                        .build())
+                .build();
 
-
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }

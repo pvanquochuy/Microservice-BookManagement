@@ -1,4 +1,4 @@
-package com.example.job_portal.common.configuration;
+package com.example.job_portal.usermanagement.sercurity;
 
 import com.example.job_portal.usermanagement.request.IntrospectRequest;
 import com.example.job_portal.usermanagement.service.AuthenticationService;

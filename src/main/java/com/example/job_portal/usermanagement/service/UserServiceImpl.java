@@ -86,7 +86,6 @@ public class UserServiceImpl implements UserService{
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         var roles = roleRepository.findAllById(request.getRoles());
 
-
         return userMapper.toDto(userRepository.save(user));
     }
     

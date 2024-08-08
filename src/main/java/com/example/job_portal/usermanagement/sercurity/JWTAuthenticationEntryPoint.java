@@ -1,4 +1,4 @@
-package com.example.job_portal.common.configuration;
+package com.example.job_portal.usermanagement.sercurity;
 
 import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {

@@ -55,6 +55,7 @@ public class UserController {
      */
     @GetMapping
         ResponseEntity<GenericResponse<List<UserDTO>>> getUsers(){
+        log.info("getUsers:");
         List<UserDTO> result = userService.getUsers();
         GenericResponse<List<UserDTO>> response = GenericResponse
                 .<List<UserDTO>>builder()

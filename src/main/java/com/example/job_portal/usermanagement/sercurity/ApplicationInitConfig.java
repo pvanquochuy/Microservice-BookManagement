@@ -1,4 +1,4 @@
-package com.example.job_portal.common.configuration;
+package com.example.job_portal.usermanagement.sercurity;
 
 import com.example.job_portal.usermanagement.entity.Role;
 import com.example.job_portal.usermanagement.entity.User;
@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
