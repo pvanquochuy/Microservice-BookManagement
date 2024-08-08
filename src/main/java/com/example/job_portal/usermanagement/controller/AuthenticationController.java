@@ -9,6 +9,7 @@ import com.example.job_portal.usermanagement.dto.IntrospectDTO;
 import com.example.job_portal.usermanagement.request.AuthenticationRequest;
 import com.example.job_portal.usermanagement.request.IntrospectRequest;
 import com.example.job_portal.usermanagement.request.LogoutRequest;
+import com.example.job_portal.usermanagement.request.RefreshRequest;
 import com.example.job_portal.usermanagement.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
@@ -65,6 +66,27 @@ public class AuthenticationController {
         var result = authenticationService.introspect(request);
         GenericResponse<IntrospectDTO> response = GenericResponse
                 .<IntrospectDTO>builder()
+                .isSuccess(true)
+                .data(result)
+                .message(MessageDTO.builder()
+                        .messageDetail(MessageConstant.SUCCESS)
+                        .messageCode(MessageCodeConstant.SUCCESS)
+                        .build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     *  refresh API
+     *
+     * @param request
+     * @return GenericResponse<AuthenticationDTO>
+     */
+    @PostMapping("/refresh")
+    ResponseEntity<GenericResponse<AuthenticationDTO>> authenticate(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+        var result = authenticationService.refreshToken(request);
+        GenericResponse<AuthenticationDTO> response = GenericResponse
+                .<AuthenticationDTO>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
