@@ -1,6 +1,5 @@
 package com.example.job_portal.usermanagement.request;
 
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

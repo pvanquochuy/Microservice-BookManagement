@@ -1,13 +1,11 @@
 package com.example.job_portal.usermanagement.mapper;
 
-import com.example.job_portal.usermanagement.dto.PermissionDTO;
-import com.example.job_portal.usermanagement.dto.RoleDTO;
-import com.example.job_portal.usermanagement.entity.Permission;
-import com.example.job_portal.usermanagement.entity.Role;
-import com.example.job_portal.usermanagement.request.PermissionRequest;
-import com.example.job_portal.usermanagement.request.RoleRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import com.example.job_portal.usermanagement.dto.RoleDTO;
+import com.example.job_portal.usermanagement.entity.Role;
+import com.example.job_portal.usermanagement.request.RoleRequest;
 
 @Mapper(componentModel = "spring")
 public interface RoleMapper {

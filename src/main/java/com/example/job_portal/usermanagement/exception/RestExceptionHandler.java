@@ -1,6 +1,5 @@
 package com.example.job_portal.usermanagement.exception;
 
-
 public class RestExceptionHandler extends RuntimeException {
     private final String messageCode;
 

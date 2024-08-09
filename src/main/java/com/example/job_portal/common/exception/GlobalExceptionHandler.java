@@ -1,11 +1,9 @@
 package com.example.job_portal.common.exception;
 
-import com.example.job_portal.common.constant.MessageCodeConstant;
-import com.example.job_portal.common.constant.MessageConstant;
-import com.example.job_portal.common.dto.GenericResponse;
-import com.example.job_portal.common.dto.MessageDTO;
-import com.example.job_portal.usermanagement.exception.RestExceptionHandler;
-import com.example.job_portal.usermanagement.exception.UserManagementException;
+import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,9 +15,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-import java.util.Map;
+import com.example.job_portal.common.constant.MessageCodeConstant;
+import com.example.job_portal.common.constant.MessageConstant;
+import com.example.job_portal.common.dto.GenericResponse;
+import com.example.job_portal.common.dto.MessageDTO;
+import com.example.job_portal.usermanagement.exception.RestExceptionHandler;
+import com.example.job_portal.usermanagement.exception.UserManagementException;
 
 @ControllerAdvice
 @RestController
@@ -27,7 +28,8 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(UserManagementException.class)
-    public ResponseEntity<GenericResponse<Object>> handleUserManagementException(UserManagementException ex, WebRequest request) {
+    public ResponseEntity<GenericResponse<Object>> handleUserManagementException(
+            UserManagementException ex, WebRequest request) {
         GenericResponse<Object> response = GenericResponse.builder()
                 .isSuccess(false)
                 .message(MessageDTO.builder()
@@ -101,6 +103,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
+
     @ExceptionHandler(RestExceptionHandler.class)
     public ResponseEntity<GenericResponse<Object>> handleRestExceptionHandler(RestExceptionHandler ex) {
         GenericResponse<Object> response = GenericResponse.<Object>builder()

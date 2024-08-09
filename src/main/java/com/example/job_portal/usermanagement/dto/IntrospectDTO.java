@@ -1,7 +1,5 @@
 package com.example.job_portal.usermanagement.dto;
 
-
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

@@ -1,6 +1,5 @@
 package com.example.job_portal.usermanagement.dto;
 
-
 import java.time.LocalDate;
 import java.util.Set;
 

@@ -1,5 +1,13 @@
 package com.example.job_portal.usermanagement.controller;
 
+import java.text.ParseException;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.dto.GenericResponse;
@@ -12,18 +20,11 @@ import com.example.job_portal.usermanagement.request.LogoutRequest;
 import com.example.job_portal.usermanagement.request.RefreshRequest;
 import com.example.job_portal.usermanagement.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.text.ParseException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,7 +34,6 @@ import java.text.ParseException;
 public class AuthenticationController {
     AuthenticationService authenticationService;
 
-
     /**
      *  authenticate API
      *
@@ -41,10 +41,9 @@ public class AuthenticationController {
      * @return GenericResponse<AuthenticationDTO>
      */
     @PostMapping("/token")
-    ResponseEntity<GenericResponse<AuthenticationDTO>> authenticate(@RequestBody AuthenticationRequest request){
+    ResponseEntity<GenericResponse<AuthenticationDTO>> authenticate(@RequestBody AuthenticationRequest request) {
         var result = authenticationService.authenticate(request);
-        GenericResponse<AuthenticationDTO> response = GenericResponse
-                .<AuthenticationDTO>builder()
+        GenericResponse<AuthenticationDTO> response = GenericResponse.<AuthenticationDTO>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -62,10 +61,10 @@ public class AuthenticationController {
      * @return GenericResponse<IntrospectDTO>
      */
     @PostMapping("/introspect")
-    ResponseEntity<GenericResponse<IntrospectDTO>> authenticate(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
+    ResponseEntity<GenericResponse<IntrospectDTO>> authenticate(@RequestBody IntrospectRequest request)
+            throws ParseException, JOSEException {
         var result = authenticationService.introspect(request);
-        GenericResponse<IntrospectDTO> response = GenericResponse
-                .<IntrospectDTO>builder()
+        GenericResponse<IntrospectDTO> response = GenericResponse.<IntrospectDTO>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -83,10 +82,10 @@ public class AuthenticationController {
      * @return GenericResponse<AuthenticationDTO>
      */
     @PostMapping("/refresh")
-    ResponseEntity<GenericResponse<AuthenticationDTO>> authenticate(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+    ResponseEntity<GenericResponse<AuthenticationDTO>> authenticate(@RequestBody RefreshRequest request)
+            throws ParseException, JOSEException {
         var result = authenticationService.refreshToken(request);
-        GenericResponse<AuthenticationDTO> response = GenericResponse
-                .<AuthenticationDTO>builder()
+        GenericResponse<AuthenticationDTO> response = GenericResponse.<AuthenticationDTO>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -100,15 +99,14 @@ public class AuthenticationController {
     /**
      *  logout API
      *
-     * 
+     *
      * @return GenericResponse<IntrospectDTO>
      */
     @PostMapping("/logout")
-    ResponseEntity<GenericResponse<Void>> authenticate(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+    ResponseEntity<GenericResponse<Void>> authenticate(@RequestBody LogoutRequest request)
+            throws ParseException, JOSEException {
         authenticationService.logout(request);
-        GenericResponse<Void> response = GenericResponse
-                .<Void>builder()
-                .build();
+        GenericResponse<Void> response = GenericResponse.<Void>builder().build();
         return ResponseEntity.ok(response);
     }
 }

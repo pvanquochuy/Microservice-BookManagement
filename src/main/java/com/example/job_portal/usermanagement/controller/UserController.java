@@ -1,5 +1,12 @@
 package com.example.job_portal.usermanagement.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.dto.GenericResponse;
@@ -8,15 +15,11 @@ import com.example.job_portal.usermanagement.dto.UserDTO;
 import com.example.job_portal.usermanagement.request.UserCreationRequest;
 import com.example.job_portal.usermanagement.request.UserUpdateRequest;
 import com.example.job_portal.usermanagement.service.UserService;
-import jakarta.validation.Valid;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,10 +37,9 @@ public class UserController {
      * @return GenericResponse<Object>
      */
     @PostMapping
-    ResponseEntity<GenericResponse<UserDTO>> createUser(@RequestBody @Valid UserCreationRequest request){
+    ResponseEntity<GenericResponse<UserDTO>> createUser(@RequestBody @Valid UserCreationRequest request) {
         UserDTO result = userService.createUser(request);
-        GenericResponse<UserDTO> response = GenericResponse
-                .<UserDTO>builder()
+        GenericResponse<UserDTO> response = GenericResponse.<UserDTO>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -54,11 +56,10 @@ public class UserController {
      * @return GenericResponse<Object>
      */
     @GetMapping
-        ResponseEntity<GenericResponse<List<UserDTO>>> getUsers(){
+    ResponseEntity<GenericResponse<List<UserDTO>>> getUsers() {
         log.info("getUsers:");
         List<UserDTO> result = userService.getUsers();
-        GenericResponse<List<UserDTO>> response = GenericResponse
-                .<List<UserDTO>>builder()
+        GenericResponse<List<UserDTO>> response = GenericResponse.<List<UserDTO>>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -69,17 +70,15 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-
     /**
      * Get  user by id API
      *
      * @return GenericResponse<Object>
      */
     @GetMapping("/{userId}")
-    ResponseEntity<GenericResponse<UserDTO>> getUser(@PathVariable String userId){
+    ResponseEntity<GenericResponse<UserDTO>> getUser(@PathVariable String userId) {
         UserDTO result = userService.getUser(userId);
-        GenericResponse<UserDTO> response = GenericResponse
-                .<UserDTO>builder()
+        GenericResponse<UserDTO> response = GenericResponse.<UserDTO>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -91,10 +90,9 @@ public class UserController {
     }
 
     @GetMapping("/my-info")
-    ResponseEntity<GenericResponse<UserDTO>> getMyInfo(){
+    ResponseEntity<GenericResponse<UserDTO>> getMyInfo() {
         UserDTO result = userService.getMyInfo();
-        GenericResponse<UserDTO> response = GenericResponse
-                .<UserDTO>builder()
+        GenericResponse<UserDTO> response = GenericResponse.<UserDTO>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -111,10 +109,10 @@ public class UserController {
      * @return GenericResponse<Object>
      */
     @PutMapping("/{userId}")
-    ResponseEntity<GenericResponse<UserDTO>> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
+    ResponseEntity<GenericResponse<UserDTO>> updateUser(
+            @PathVariable String userId, @RequestBody UserUpdateRequest request) {
         UserDTO user = userService.updateUser(userId, request);
-        GenericResponse<UserDTO> response = GenericResponse
-                .<UserDTO>builder()
+        GenericResponse<UserDTO> response = GenericResponse.<UserDTO>builder()
                 .isSuccess(true)
                 .data(user)
                 .message(MessageDTO.builder()
@@ -135,10 +133,8 @@ public class UserController {
     @DeleteMapping("/{id}")
     public GenericResponse<Object> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
-        return GenericResponse
-                .builder()
-                .message(MessageDTO
-                        .builder()
+        return GenericResponse.builder()
+                .message(MessageDTO.builder()
                         .messageCode(MessageCodeConstant.SUCCESS)
                         .messageDetail(MessageConstant.DELETE_DATA_SUCCESS)
                         .build())

@@ -1,11 +1,10 @@
 package com.example.job_portal.usermanagement.service;
 
+import java.util.List;
+
 import com.example.job_portal.usermanagement.dto.UserDTO;
-import com.example.job_portal.usermanagement.entity.User;
 import com.example.job_portal.usermanagement.request.UserCreationRequest;
 import com.example.job_portal.usermanagement.request.UserUpdateRequest;
-
-import java.util.List;
 
 public interface UserService {
 
@@ -30,5 +29,4 @@ public interface UserService {
      * @param request the data transfer object containing user details
      */
     UserDTO updateUser(String userId, UserUpdateRequest request);
-
 }

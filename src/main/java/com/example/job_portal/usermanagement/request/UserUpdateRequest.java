@@ -1,9 +1,7 @@
 package com.example.job_portal.usermanagement.request;
 
-
 import java.time.LocalDate;
 import java.util.List;
-
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,6 +19,6 @@ public class UserUpdateRequest {
 
     LocalDate dob;
 
-//    @DobConstraint(min = 18, message = "INVALID_DOB")
+    //    @DobConstraint(min = 18, message = "INVALID_DOB")
     List<String> roles;
 }

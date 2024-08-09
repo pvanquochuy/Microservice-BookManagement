@@ -1,5 +1,11 @@
 package com.example.job_portal.usermanagement.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
@@ -8,15 +14,11 @@ import com.example.job_portal.common.dto.MessageDTO;
 import com.example.job_portal.usermanagement.dto.PermissionDTO;
 import com.example.job_portal.usermanagement.request.PermissionRequest;
 import com.example.job_portal.usermanagement.service.PermissionService;
-import jakarta.validation.Valid;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/permissions")
@@ -33,10 +35,9 @@ public class PermissionController {
      * @return GenericResponse<Object>
      */
     @PostMapping
-    ResponseEntity<GenericResponse<PermissionDTO>> create(@RequestBody @Valid PermissionRequest request){
+    ResponseEntity<GenericResponse<PermissionDTO>> create(@RequestBody @Valid PermissionRequest request) {
         PermissionDTO result = permissionService.create(request);
-        GenericResponse<PermissionDTO> response = GenericResponse
-                .<PermissionDTO>builder()
+        GenericResponse<PermissionDTO> response = GenericResponse.<PermissionDTO>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -53,10 +54,9 @@ public class PermissionController {
      * @return GenericResponse<Object>
      */
     @GetMapping
-    ResponseEntity<GenericResponse<List<PermissionDTO>>> getAll(){
+    ResponseEntity<GenericResponse<List<PermissionDTO>>> getAll() {
         List<PermissionDTO> result = permissionService.getAll();
-        GenericResponse<List<PermissionDTO>> response = GenericResponse
-                .<List<PermissionDTO>>builder()
+        GenericResponse<List<PermissionDTO>> response = GenericResponse.<List<PermissionDTO>>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -76,10 +76,8 @@ public class PermissionController {
     @DeleteMapping("/{permission}")
     public GenericResponse<Object> delete(@PathVariable String permission) {
         permissionService.delete(permission);
-        return GenericResponse
-                .builder()
-                .message(MessageDTO
-                        .builder()
+        return GenericResponse.builder()
+                .message(MessageDTO.builder()
                         .messageCode(MessageCodeConstant.SUCCESS)
                         .messageDetail(MessageConstant.DELETE_DATA_SUCCESS)
                         .build())
