@@ -12,7 +12,7 @@ import com.example.job_portal.usermanagement.request.UserUpdateRequest;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "id", ignore = true) // Nếu bạn không muốn ánh xạ id từ UserCreationRequest
+    @Mapping(target = "id", ignore = true) // Nếu không muốn ánh xạ id từ UserCreationRequest
     User toUser(UserCreationRequest request);
 
     /**
