@@ -3,21 +3,18 @@ package com.example.job_portal.usermanagement.controller;
 import java.text.ParseException;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.dto.GenericResponse;
 import com.example.job_portal.common.dto.MessageDTO;
-import com.example.job_portal.usermanagement.dto.AuthenticationDTO;
-import com.example.job_portal.usermanagement.dto.IntrospectDTO;
-import com.example.job_portal.usermanagement.request.AuthenticationRequest;
-import com.example.job_portal.usermanagement.request.IntrospectRequest;
-import com.example.job_portal.usermanagement.request.LogoutRequest;
-import com.example.job_portal.usermanagement.request.RefreshRequest;
+import com.example.job_portal.usermanagement.dto.response.AuthenticationResponse;
+import com.example.job_portal.usermanagement.dto.response.IntrospectResponse;
+import com.example.job_portal.usermanagement.dto.request.AuthenticationRequest;
+import com.example.job_portal.usermanagement.dto.request.IntrospectRequest;
+import com.example.job_portal.usermanagement.dto.request.LogoutRequest;
+import com.example.job_portal.usermanagement.dto.request.RefreshRequest;
 import com.example.job_portal.usermanagement.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 
@@ -34,6 +31,21 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthenticationController {
     AuthenticationService authenticationService;
 
+    @PostMapping("/outbound/authentication")
+    ResponseEntity<GenericResponse<AuthenticationResponse>> outboundAuthentication
+    (@RequestParam("code") String code){
+        var result = authenticationService.outboundAuthentication(code);
+        GenericResponse<AuthenticationResponse> response = GenericResponse.<AuthenticationResponse>builder()
+                .isSuccess(true)
+                .data(result)
+                .message(MessageDTO.builder()
+                        .messageDetail(MessageConstant.SUCCESS)
+                        .messageCode(MessageCodeConstant.SUCCESS)
+                        .build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
     /**
      *  authenticate API
      *
@@ -41,9 +53,9 @@ public class AuthenticationController {
      * @return GenericResponse<AuthenticationDTO>
      */
     @PostMapping("/token")
-    ResponseEntity<GenericResponse<AuthenticationDTO>> authenticate(@RequestBody AuthenticationRequest request) {
+    ResponseEntity<GenericResponse<AuthenticationResponse>> authenticate(@RequestBody AuthenticationRequest request) {
         var result = authenticationService.authenticate(request);
-        GenericResponse<AuthenticationDTO> response = GenericResponse.<AuthenticationDTO>builder()
+        GenericResponse<AuthenticationResponse> response = GenericResponse.<AuthenticationResponse>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -61,10 +73,10 @@ public class AuthenticationController {
      * @return GenericResponse<IntrospectDTO>
      */
     @PostMapping("/introspect")
-    ResponseEntity<GenericResponse<IntrospectDTO>> authenticate(@RequestBody IntrospectRequest request)
+    ResponseEntity<GenericResponse<IntrospectResponse>> authenticate(@RequestBody IntrospectRequest request)
             throws ParseException, JOSEException {
         var result = authenticationService.introspect(request);
-        GenericResponse<IntrospectDTO> response = GenericResponse.<IntrospectDTO>builder()
+        GenericResponse<IntrospectResponse> response = GenericResponse.<IntrospectResponse>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -82,10 +94,10 @@ public class AuthenticationController {
      * @return GenericResponse<AuthenticationDTO>
      */
     @PostMapping("/refresh")
-    ResponseEntity<GenericResponse<AuthenticationDTO>> authenticate(@RequestBody RefreshRequest request)
+    ResponseEntity<GenericResponse<AuthenticationResponse>> authenticate(@RequestBody RefreshRequest request)
             throws ParseException, JOSEException {
         var result = authenticationService.refreshToken(request);
-        GenericResponse<AuthenticationDTO> response = GenericResponse.<AuthenticationDTO>builder()
+        GenericResponse<AuthenticationResponse> response = GenericResponse.<AuthenticationResponse>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()

@@ -2,10 +2,13 @@ package com.example.job_portal.usermanagement.service;
 
 import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 
+import com.example.job_portal.usermanagement.constant.PredefinedRole;
+import com.example.job_portal.usermanagement.dto.request.*;
+import com.example.job_portal.usermanagement.entity.Role;
+import com.example.job_portal.usermanagement.repository.httpclient.OutboundIdentityClient;
+import com.example.job_portal.usermanagement.repository.httpclient.OutboundUserClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,16 +18,12 @@ import org.springframework.util.CollectionUtils;
 import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.exception.AppException;
-import com.example.job_portal.usermanagement.dto.AuthenticationDTO;
-import com.example.job_portal.usermanagement.dto.IntrospectDTO;
+import com.example.job_portal.usermanagement.dto.response.AuthenticationResponse;
+import com.example.job_portal.usermanagement.dto.response.IntrospectResponse;
 import com.example.job_portal.usermanagement.entity.InvalidatedToken;
 import com.example.job_portal.usermanagement.entity.User;
 import com.example.job_portal.usermanagement.repository.InvalidatedTokenRepository;
 import com.example.job_portal.usermanagement.repository.UserRepository;
-import com.example.job_portal.usermanagement.request.AuthenticationRequest;
-import com.example.job_portal.usermanagement.request.IntrospectRequest;
-import com.example.job_portal.usermanagement.request.LogoutRequest;
-import com.example.job_portal.usermanagement.request.RefreshRequest;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -46,6 +45,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     InvalidatedTokenRepository invalidatedTokenRepository;
 
+    OutboundIdentityClient outboundIdentityClient;
+
+    OutboundUserClient outboundUserClient;
+
+
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
@@ -58,8 +62,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${jwt.refreshable-duration}")
     protected long REFRESHABLE_DURATION;
 
+    @NonFinal
+    @Value("${outbound.identity.client-id}")
+    protected  String CLIENT_ID;
+
+    @NonFinal
+    @Value("${outbound.identity.client-secret}")
+    protected  String CLIENT_SECRET;
+
+    @NonFinal
+    @Value("${outbound.identity.redirect-uri}")
+    protected  String REDIRECT_URL;
+
+    @NonFinal
+    protected final String GRANT_TYPE = "authorization_code";
+
+
     @Override
-    public IntrospectDTO introspect(IntrospectRequest request) throws JOSEException, ParseException {
+    public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
         var token = request.getToken();
         boolean isValid = true;
         try {
@@ -67,11 +87,47 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (AppException e) {
             isValid = false;
         }
-        return IntrospectDTO.builder().valid(isValid).build();
+        return IntrospectResponse.builder().valid(isValid).build();
     }
 
     @Override
-    public AuthenticationDTO authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse outboundAuthentication(String code) {
+        var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
+                .code(code)
+                .clientId(CLIENT_ID)
+                .clientSecret(CLIENT_SECRET)
+                .grantType(GRANT_TYPE)
+                .build());
+
+        log.info("TOKEN RESPONSE {} ",  response);
+
+        // Get user info
+        var userInfo = outboundUserClient.getUserInfo("json", response.getAccessToken());
+
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.builder().name(PredefinedRole.USER_ROLE).build());
+
+        // Onboard user
+        var user = userRepository.findByUsername(userInfo.getEmail()).orElseGet(
+                () -> userRepository.save(User.builder()
+                        .username(userInfo.getEmail())
+                        .firstName(userInfo.getGivenName())
+                        .lastName(userInfo.getFamilyName())
+                        .roles(roles)
+                        .build()));
+        
+        var token = generateToken(user);
+
+        return AuthenticationResponse.builder()
+                .token(response.getAccessToken())
+                .build();
+    }
+
+
+
+    @Override
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         var user = userRepository
                 .findByUsername(request.getUsername())
@@ -83,7 +139,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!authenticated) throw new AppException(MessageCodeConstant.UNAUTHORIZED, MessageConstant.INVALID_TOKEN);
 
         var token = generateToken(user);
-        return AuthenticationDTO.builder().token(token).authenticated(true).build();
+        return AuthenticationResponse.builder().token(token).authenticated(true).build();
     }
 
     private String generateToken(User user) {
@@ -132,8 +188,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+
     @Override
-    public AuthenticationDTO refreshToken(RefreshRequest request) throws ParseException, JOSEException {
+    public AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException {
         var signedJWT = verifyToken(request.getToken(), true);
 
         var jit = signedJWT.getJWTClaimsSet().getJWTID();
@@ -152,7 +209,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         var token = generateToken(user);
 
-        return AuthenticationDTO.builder().token(token).authenticated(true).build();
+        return AuthenticationResponse.builder().token(token).authenticated(true).build();
     }
 
     private SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {

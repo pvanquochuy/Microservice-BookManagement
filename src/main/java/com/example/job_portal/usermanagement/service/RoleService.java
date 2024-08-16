@@ -2,14 +2,14 @@ package com.example.job_portal.usermanagement.service;
 
 import java.util.List;
 
-import com.example.job_portal.usermanagement.dto.RoleDTO;
-import com.example.job_portal.usermanagement.request.RoleRequest;
+import com.example.job_portal.usermanagement.dto.response.RoleResponse;
+import com.example.job_portal.usermanagement.dto.request.RoleRequest;
 
 public interface RoleService {
 
-    RoleDTO create(RoleRequest request);
+    RoleResponse create(RoleRequest request);
 
-    List<RoleDTO> getAll();
+    List<RoleResponse> getAll();
 
     void delete(String role);
 }

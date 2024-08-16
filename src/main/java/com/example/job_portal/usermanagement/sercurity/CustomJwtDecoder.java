@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
-import com.example.job_portal.usermanagement.request.IntrospectRequest;
+import com.example.job_portal.usermanagement.dto.request.IntrospectRequest;
 import com.example.job_portal.usermanagement.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 

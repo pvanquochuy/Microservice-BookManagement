@@ -2,9 +2,9 @@ package com.example.job_portal.usermanagement.mapper;
 
 import org.mapstruct.Mapper;
 
-import com.example.job_portal.usermanagement.dto.PermissionDTO;
+import com.example.job_portal.usermanagement.dto.response.PermissionResponse;
 import com.example.job_portal.usermanagement.entity.Permission;
-import com.example.job_portal.usermanagement.request.PermissionRequest;
+import com.example.job_portal.usermanagement.dto.request.PermissionRequest;
 
 @Mapper(componentModel = "spring")
 public interface PermissionMapper {
@@ -23,5 +23,5 @@ public interface PermissionMapper {
      * @param permission the entity
      * @return the dto
      */
-    PermissionDTO toDto(Permission permission);
+    PermissionResponse toDto(Permission permission);
 }

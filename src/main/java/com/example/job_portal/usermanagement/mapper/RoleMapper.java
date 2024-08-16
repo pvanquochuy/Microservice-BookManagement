@@ -3,9 +3,9 @@ package com.example.job_portal.usermanagement.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.example.job_portal.usermanagement.dto.RoleDTO;
+import com.example.job_portal.usermanagement.dto.response.RoleResponse;
 import com.example.job_portal.usermanagement.entity.Role;
-import com.example.job_portal.usermanagement.request.RoleRequest;
+import com.example.job_portal.usermanagement.dto.request.RoleRequest;
 
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
@@ -24,5 +24,5 @@ public interface RoleMapper {
      * @param role the entity
      * @return the dto
      */
-    RoleDTO toDto(Role role);
+    RoleResponse toDto(Role role);
 }

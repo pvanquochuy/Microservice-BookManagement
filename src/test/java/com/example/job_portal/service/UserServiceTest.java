@@ -16,11 +16,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
-import com.example.job_portal.usermanagement.dto.UserDTO;
+import com.example.job_portal.usermanagement.dto.response.UserResponse;
 import com.example.job_portal.usermanagement.entity.User;
 import com.example.job_portal.usermanagement.exception.UserManagementException;
 import com.example.job_portal.usermanagement.repository.UserRepository;
-import com.example.job_portal.usermanagement.request.UserCreationRequest;
+import com.example.job_portal.usermanagement.dto.request.UserCreationRequest;
 import com.example.job_portal.usermanagement.service.UserService;
 
 @SpringBootTest
@@ -34,7 +34,7 @@ public class UserServiceTest {
     private UserRepository userRepository;
 
     private UserCreationRequest request;
-    private UserDTO userDTO;
+    private UserResponse userResponse;
     private User user;
     private LocalDate dob;
 
@@ -50,7 +50,7 @@ public class UserServiceTest {
                 .dob(dob)
                 .build();
 
-        userDTO = userDTO.builder()
+        userResponse = userResponse.builder()
                 .id("cf0600f538b3")
                 .username("john")
                 .firstName("John")

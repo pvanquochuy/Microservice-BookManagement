@@ -1,4 +1,4 @@
-package com.example.job_portal.usermanagement.dto;
+package com.example.job_portal.usermanagement.dto.response;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -11,11 +11,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDTO {
+public class UserResponse {
     String id;
     String username;
     String firstName;
     String lastName;
     LocalDate dob;
-    Set<RoleDTO> roles;
+    Set<RoleResponse> roles;
 }

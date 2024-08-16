@@ -1,4 +1,4 @@
-package com.example.job_portal.usermanagement.dto;
+package com.example.job_portal.usermanagement.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionDTO {
-    String name;
-    String description;
+public class AuthenticationResponse {
+    String token;
+    boolean authenticated;
 }

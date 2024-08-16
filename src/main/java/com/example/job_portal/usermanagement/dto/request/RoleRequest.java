@@ -1,4 +1,4 @@
-package com.example.job_portal.usermanagement.request;
+package com.example.job_portal.usermanagement.dto.request;
 
 import java.util.Set;
 

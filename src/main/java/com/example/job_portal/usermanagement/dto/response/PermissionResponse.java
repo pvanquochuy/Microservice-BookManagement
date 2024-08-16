@@ -1,16 +1,14 @@
-package com.example.job_portal.usermanagement.request;
+package com.example.job_portal.usermanagement.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-/**
- * verify token request class
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class IntrospectRequest {
-    String token;
+public class PermissionResponse {
+    String name;
+    String description;
 }

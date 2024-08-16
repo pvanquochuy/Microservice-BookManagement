@@ -2,6 +2,7 @@ package com.example.job_portal.usermanagement.controller;
 
 import java.util.List;
 
+import com.example.job_portal.usermanagement.dto.response.UserResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,8 @@ import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.dto.GenericResponse;
 import com.example.job_portal.common.dto.MessageDTO;
-import com.example.job_portal.usermanagement.dto.UserDTO;
-import com.example.job_portal.usermanagement.request.UserCreationRequest;
-import com.example.job_portal.usermanagement.request.UserUpdateRequest;
+import com.example.job_portal.usermanagement.dto.request.UserCreationRequest;
+import com.example.job_portal.usermanagement.dto.request.UserUpdateRequest;
 import com.example.job_portal.usermanagement.service.UserService;
 
 import lombok.AccessLevel;
@@ -37,9 +37,9 @@ public class UserController {
      * @return GenericResponse<Object>
      */
     @PostMapping
-    ResponseEntity<GenericResponse<UserDTO>> createUser(@RequestBody @Valid UserCreationRequest request) {
-        UserDTO result = userService.createUser(request);
-        GenericResponse<UserDTO> response = GenericResponse.<UserDTO>builder()
+    ResponseEntity<GenericResponse<UserResponse>> createUser(@RequestBody @Valid UserCreationRequest request) {
+        UserResponse result = userService.createUser(request);
+        GenericResponse<UserResponse> response = GenericResponse.<UserResponse>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -56,10 +56,10 @@ public class UserController {
      * @return GenericResponse<Object>
      */
     @GetMapping
-    ResponseEntity<GenericResponse<List<UserDTO>>> getUsers() {
+    ResponseEntity<GenericResponse<List<UserResponse>>> getUsers() {
         log.info("getUsers:");
-        List<UserDTO> result = userService.getUsers();
-        GenericResponse<List<UserDTO>> response = GenericResponse.<List<UserDTO>>builder()
+        List<UserResponse> result = userService.getUsers();
+        GenericResponse<List<UserResponse>> response = GenericResponse.<List<UserResponse>>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -76,9 +76,9 @@ public class UserController {
      * @return GenericResponse<Object>
      */
     @GetMapping("/{userId}")
-    ResponseEntity<GenericResponse<UserDTO>> getUser(@PathVariable String userId) {
-        UserDTO result = userService.getUser(userId);
-        GenericResponse<UserDTO> response = GenericResponse.<UserDTO>builder()
+    ResponseEntity<GenericResponse<UserResponse>> getUser(@PathVariable String userId) {
+        UserResponse result = userService.getUser(userId);
+        GenericResponse<UserResponse> response = GenericResponse.<UserResponse>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -90,9 +90,9 @@ public class UserController {
     }
 
     @GetMapping("/my-info")
-    ResponseEntity<GenericResponse<UserDTO>> getMyInfo() {
-        UserDTO result = userService.getMyInfo();
-        GenericResponse<UserDTO> response = GenericResponse.<UserDTO>builder()
+    ResponseEntity<GenericResponse<UserResponse>> getMyInfo() {
+        UserResponse result = userService.getMyInfo();
+        GenericResponse<UserResponse> response = GenericResponse.<UserResponse>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -109,10 +109,10 @@ public class UserController {
      * @return GenericResponse<Object>
      */
     @PutMapping("/{userId}")
-    ResponseEntity<GenericResponse<UserDTO>> updateUser(
+    ResponseEntity<GenericResponse<UserResponse>> updateUser(
             @PathVariable String userId, @RequestBody UserUpdateRequest request) {
-        UserDTO user = userService.updateUser(userId, request);
-        GenericResponse<UserDTO> response = GenericResponse.<UserDTO>builder()
+        UserResponse user = userService.updateUser(userId, request);
+        GenericResponse<UserResponse> response = GenericResponse.<UserResponse>builder()
                 .isSuccess(true)
                 .data(user)
                 .message(MessageDTO.builder()

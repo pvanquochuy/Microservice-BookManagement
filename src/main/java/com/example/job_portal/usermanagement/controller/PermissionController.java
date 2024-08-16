@@ -2,6 +2,7 @@ package com.example.job_portal.usermanagement.controller;
 
 import java.util.List;
 
+import com.example.job_portal.usermanagement.dto.response.PermissionResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -11,8 +12,7 @@ import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.dto.GenericResponse;
 import com.example.job_portal.common.dto.MessageDTO;
-import com.example.job_portal.usermanagement.dto.PermissionDTO;
-import com.example.job_portal.usermanagement.request.PermissionRequest;
+import com.example.job_portal.usermanagement.dto.request.PermissionRequest;
 import com.example.job_portal.usermanagement.service.PermissionService;
 
 import lombok.AccessLevel;
@@ -35,9 +35,9 @@ public class PermissionController {
      * @return GenericResponse<Object>
      */
     @PostMapping
-    ResponseEntity<GenericResponse<PermissionDTO>> create(@RequestBody @Valid PermissionRequest request) {
-        PermissionDTO result = permissionService.create(request);
-        GenericResponse<PermissionDTO> response = GenericResponse.<PermissionDTO>builder()
+    ResponseEntity<GenericResponse<PermissionResponse>> create(@RequestBody @Valid PermissionRequest request) {
+        PermissionResponse result = permissionService.create(request);
+        GenericResponse<PermissionResponse> response = GenericResponse.<PermissionResponse>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -54,9 +54,9 @@ public class PermissionController {
      * @return GenericResponse<Object>
      */
     @GetMapping
-    ResponseEntity<GenericResponse<List<PermissionDTO>>> getAll() {
-        List<PermissionDTO> result = permissionService.getAll();
-        GenericResponse<List<PermissionDTO>> response = GenericResponse.<List<PermissionDTO>>builder()
+    ResponseEntity<GenericResponse<List<PermissionResponse>>> getAll() {
+        List<PermissionResponse> result = permissionService.getAll();
+        GenericResponse<List<PermissionResponse>> response = GenericResponse.<List<PermissionResponse>>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()

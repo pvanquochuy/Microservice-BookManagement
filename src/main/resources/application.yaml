@@ -13,6 +13,12 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+outbound:
+  identity:
+    client-id: "688629556068-uk9saha2n257qho7n1nfmbnb3503b00n.apps.googleusercontent.com"
+    client-secret: "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"
+    redirect-uri: "http://localhost:8080/authenticate"
+
     
 
 jwt:

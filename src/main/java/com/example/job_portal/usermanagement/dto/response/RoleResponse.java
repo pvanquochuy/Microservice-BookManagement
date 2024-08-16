@@ -1,4 +1,4 @@
-package com.example.job_portal.usermanagement.dto;
+package com.example.job_portal.usermanagement.dto.response;
 
 import java.util.Set;
 
@@ -10,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleDTO {
+public class RoleResponse {
     String name;
     String description;
-    Set<PermissionDTO> permissions;
+    Set<PermissionResponse> permissions;
 }

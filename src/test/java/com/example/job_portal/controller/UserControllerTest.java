@@ -2,6 +2,7 @@ package com.example.job_portal.controller;
 
 import java.time.LocalDate;
 
+import com.example.job_portal.usermanagement.dto.response.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -15,8 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.job_portal.usermanagement.dto.UserDTO;
-import com.example.job_portal.usermanagement.request.UserCreationRequest;
+import com.example.job_portal.usermanagement.dto.request.UserCreationRequest;
 import com.example.job_portal.usermanagement.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -36,7 +36,7 @@ public class UserControllerTest {
     private UserService userService;
 
     private UserCreationRequest request;
-    private UserDTO userDTO;
+    private UserResponse userResponse;
     private LocalDate dob;
 
     @BeforeEach
@@ -51,7 +51,7 @@ public class UserControllerTest {
                 .dob(dob)
                 .build();
 
-        userDTO = UserDTO.builder()
+        userResponse = UserResponse.builder()
                 .id("cf0600f538b3")
                 .username("john")
                 .firstName("John")
@@ -68,7 +68,7 @@ public class UserControllerTest {
         objectMapper.registerModule(new JavaTimeModule());
         String content = objectMapper.writeValueAsString(request);
 
-        Mockito.when(userService.createUser(ArgumentMatchers.any())).thenReturn(userDTO);
+        Mockito.when(userService.createUser(ArgumentMatchers.any())).thenReturn(userResponse);
 
         // WHEN, THEN
         mockMvc.perform(MockMvcRequestBuilders.post("/users")

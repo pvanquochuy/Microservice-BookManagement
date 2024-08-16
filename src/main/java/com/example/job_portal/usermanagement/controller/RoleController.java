@@ -2,6 +2,7 @@ package com.example.job_portal.usermanagement.controller;
 
 import java.util.List;
 
+import com.example.job_portal.usermanagement.dto.response.RoleResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -11,8 +12,7 @@ import com.example.job_portal.common.constant.MessageCodeConstant;
 import com.example.job_portal.common.constant.MessageConstant;
 import com.example.job_portal.common.dto.GenericResponse;
 import com.example.job_portal.common.dto.MessageDTO;
-import com.example.job_portal.usermanagement.dto.RoleDTO;
-import com.example.job_portal.usermanagement.request.RoleRequest;
+import com.example.job_portal.usermanagement.dto.request.RoleRequest;
 import com.example.job_portal.usermanagement.service.RoleService;
 
 import lombok.AccessLevel;
@@ -35,9 +35,9 @@ public class RoleController {
      * @return GenericResponse<Object>
      */
     @PostMapping
-    ResponseEntity<GenericResponse<RoleDTO>> create(@RequestBody @Valid RoleRequest request) {
-        RoleDTO result = roleService.create(request);
-        GenericResponse<RoleDTO> response = GenericResponse.<RoleDTO>builder()
+    ResponseEntity<GenericResponse<RoleResponse>> create(@RequestBody @Valid RoleRequest request) {
+        RoleResponse result = roleService.create(request);
+        GenericResponse<RoleResponse> response = GenericResponse.<RoleResponse>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()
@@ -54,9 +54,9 @@ public class RoleController {
      * @return GenericResponse<Object>
      */
     @GetMapping
-    ResponseEntity<GenericResponse<List<RoleDTO>>> getAll() {
-        List<RoleDTO> result = roleService.getAll();
-        GenericResponse<List<RoleDTO>> response = GenericResponse.<List<RoleDTO>>builder()
+    ResponseEntity<GenericResponse<List<RoleResponse>>> getAll() {
+        List<RoleResponse> result = roleService.getAll();
+        GenericResponse<List<RoleResponse>> response = GenericResponse.<List<RoleResponse>>builder()
                 .isSuccess(true)
                 .data(result)
                 .message(MessageDTO.builder()

@@ -2,13 +2,13 @@ package com.example.job_portal.usermanagement.service;
 
 import java.util.List;
 
+import com.example.job_portal.usermanagement.dto.response.PermissionResponse;
 import org.springframework.stereotype.Service;
 
-import com.example.job_portal.usermanagement.dto.PermissionDTO;
 import com.example.job_portal.usermanagement.entity.Permission;
 import com.example.job_portal.usermanagement.mapper.PermissionMapper;
 import com.example.job_portal.usermanagement.repository.PermissionRepository;
-import com.example.job_portal.usermanagement.request.PermissionRequest;
+import com.example.job_portal.usermanagement.dto.request.PermissionRequest;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +25,14 @@ public class PermissionServiceImpl implements PermissionService {
     PermissionMapper permissionMapper;
 
     @Override
-    public PermissionDTO create(PermissionRequest request) {
+    public PermissionResponse create(PermissionRequest request) {
         Permission permission = permissionMapper.toPermission(request);
         permission = permissionRepository.save(permission);
         return permissionMapper.toDto(permission);
     }
 
     @Override
-    public List<PermissionDTO> getAll() {
+    public List<PermissionResponse> getAll() {
         var permission = permissionRepository.findAll();
         return permission.stream().map(permissionMapper::toDto).toList();
     }

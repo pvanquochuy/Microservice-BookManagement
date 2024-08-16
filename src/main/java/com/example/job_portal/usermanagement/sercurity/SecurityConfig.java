@@ -23,7 +23,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity
 public class SecurityConfig {
     private static final String[] PUBLIC_ENDPOINTS = {
-        "/api/users", "/api/auth/token", "/api/auth/introspect", "/api/auth/logout", "/api/auth/refresh"
+        "/api/users", "/api/auth/token", "/api/auth/introspect", "/api/auth/logout",
+            "/api/auth/refresh", "api/auth/outbound/authentication"
     };
 
     @Autowired

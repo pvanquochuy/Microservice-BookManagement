@@ -2,13 +2,13 @@ package com.example.job_portal.usermanagement.service;
 
 import java.util.List;
 
-import com.example.job_portal.usermanagement.dto.PermissionDTO;
-import com.example.job_portal.usermanagement.request.PermissionRequest;
+import com.example.job_portal.usermanagement.dto.response.PermissionResponse;
+import com.example.job_portal.usermanagement.dto.request.PermissionRequest;
 
 public interface PermissionService {
-    PermissionDTO create(PermissionRequest request);
+    PermissionResponse create(PermissionRequest request);
 
-    List<PermissionDTO> getAll();
+    List<PermissionResponse> getAll();
 
     void delete(String permission);
 }
